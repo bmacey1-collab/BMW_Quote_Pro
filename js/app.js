@@ -1,3 +1,20 @@
+window.addEventListener("online", function() {
+  const status = document.getElementById("connectionStatus");
+  if (status && supabaseClient) {
+    status.textContent = "Connected automatically";
+    status.classList.add("connected");
+    status.classList.remove("error");
+  }
+});
+
+window.addEventListener("offline", function() {
+  const status = document.getElementById("connectionStatus");
+  if (status) {
+    status.textContent = "Browser is offline";
+    status.classList.add("error");
+  }
+});
+
 window.addEventListener("error", function(event) {
   console.error("BMW Quote Pro error:", event.error || event.message);
 

@@ -28,8 +28,8 @@
 
   function getSupabaseSettings() {
     return {
-      url: localStorage.getItem('vehicleQuoteSupabaseUrl') || '',
-      key: localStorage.getItem('vehicleQuoteSupabaseKey') || ''
+      url: localStorage.getItem(APP_CONFIG.supabaseUrlStorageKey) || '',
+      key: localStorage.getItem(APP_CONFIG.supabaseKeyStorageKey) || ''
     };
   }
 
@@ -46,8 +46,20 @@
     }
 
     try {
-      supabaseClient = window.supabase.createClient(settings.url, settings.key);
-      setConnectionStatus('Configured', 'connected');
+      supabaseClient = window.supabase.createClient(
+        settings.url,
+        settings.key,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
+            storage: window.localStorage,
+            storageKey: "bmw-quote-pro-auth"
+          }
+        }
+      );
+      setConnectionStatus('Connected automatically', 'connected');
 
       supabaseClient.auth.getSession().then(function(result) {
         const session = result.data ? result.data.session : null;
@@ -71,6 +83,29 @@
     }
   }
 
+  async function forgetSupabaseConnection() {
+    if (supabaseClient) {
+      try {
+        await supabaseClient.auth.signOut();
+      } catch (error) {
+        console.warn("Unable to sign out before clearing connection:", error);
+      }
+    }
+
+    localStorage.removeItem(APP_CONFIG.supabaseUrlStorageKey);
+    localStorage.removeItem(APP_CONFIG.supabaseKeyStorageKey);
+    localStorage.removeItem("bmw-quote-pro-auth");
+
+    supabaseClient = null;
+    currentUser = null;
+
+    document.getElementById("supabaseUrl").value = "";
+    document.getElementById("supabaseKey").value = "";
+    updateAuthUi(null);
+    setConnectionStatus("Connection removed", "");
+    setAuthMessage("Database connection removed from this browser.", "success");
+  }
+
   function saveSupabaseSettings() {
     const url = document.getElementById('supabaseUrl').value.trim();
     const key = document.getElementById('supabaseKey').value.trim();
@@ -80,8 +115,8 @@
       return;
     }
 
-    localStorage.setItem('vehicleQuoteSupabaseUrl', url);
-    localStorage.setItem('vehicleQuoteSupabaseKey', key);
+    localStorage.setItem(APP_CONFIG.supabaseUrlStorageKey, url);
+    localStorage.setItem(APP_CONFIG.supabaseKeyStorageKey, key);
     initializeSupabase();
     setConnectionStatus('Saved', 'connected');
   }
@@ -133,7 +168,13 @@
     }
 
     setAuthMessage('Creating account…', '');
-    const result = await supabaseClient.auth.signUp({ email: email, password: password });
+    const result = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        emailRedirectTo: APP_CONFIG.siteUrl
+      }
+    });
 
     if (result.error) {
       setAuthMessage(result.error.message, 'error');

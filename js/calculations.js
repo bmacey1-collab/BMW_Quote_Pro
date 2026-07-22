@@ -251,6 +251,8 @@ function getNum(id) {
       selectMonths, selectApr, balloon, selectSalesTax, selectFinanceAmount, selectPayment
     };
 
+    window.currentQuoteResults = results;
+
     updateScreenResults(results);
     updateQuote(results);
     applyDisplayChoices();
