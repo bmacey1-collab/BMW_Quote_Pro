@@ -5,6 +5,59 @@
   let currentQuoteId = null;
   let currentUser = null;
 
+  let toastTimer = null;
+  let databaseSettingsManuallyOpened = false;
+
+  function showToast(message, type) {
+    const toast = document.getElementById('appToast');
+    if (!toast) return;
+
+    clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.className = 'app-toast visible' + (type ? ' ' + type : '');
+
+    toastTimer = setTimeout(function() {
+      toast.classList.remove('visible');
+    }, 4200);
+  }
+
+  function updateDatabaseSetupVisibility() {
+    const connectionSection = document.getElementById('connectionSetupSection');
+    const accountSection = document.getElementById('accountSetupSection');
+    const readyBar = document.getElementById('databaseReadyBar');
+    const readyEmail = document.getElementById('databaseReadyEmail');
+    const settings = getSupabaseSettings();
+
+    if (!connectionSection || !accountSection || !readyBar || !readyEmail) return;
+
+    const ready = Boolean(settings.url && settings.key && currentUser);
+
+    if (ready && !databaseSettingsManuallyOpened) {
+      connectionSection.hidden = true;
+      accountSection.hidden = true;
+      readyBar.hidden = false;
+      readyEmail.textContent = currentUser.email
+        ? '— signed in as ' + currentUser.email
+        : '';
+    } else {
+      connectionSection.hidden = false;
+      accountSection.hidden = false;
+      readyBar.hidden = true;
+      readyEmail.textContent = '';
+    }
+  }
+
+  function showDatabaseSettings() {
+    databaseSettingsManuallyOpened = true;
+    updateDatabaseSetupVisibility();
+
+    const section = document.getElementById('connectionSetupSection');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+
   function setDbMessage(message, type) {
     const el = document.getElementById('databaseMessage');
     if (!el) return;
@@ -55,7 +108,7 @@
             autoRefreshToken: true,
             detectSessionInUrl: true,
             storage: window.localStorage,
-            storageKey: "bmw-quote-pro-auth"
+            storageKey: APP_CONFIG.supabaseAuthStorageKey
           }
         }
       );
@@ -88,22 +141,25 @@
       try {
         await supabaseClient.auth.signOut();
       } catch (error) {
-        console.warn("Unable to sign out before clearing connection:", error);
+        console.warn('Unable to sign out before clearing connection:', error);
       }
     }
 
     localStorage.removeItem(APP_CONFIG.supabaseUrlStorageKey);
     localStorage.removeItem(APP_CONFIG.supabaseKeyStorageKey);
-    localStorage.removeItem("bmw-quote-pro-auth");
+    localStorage.removeItem(APP_CONFIG.supabaseAuthStorageKey);
 
     supabaseClient = null;
     currentUser = null;
+    databaseSettingsManuallyOpened = true;
 
-    document.getElementById("supabaseUrl").value = "";
-    document.getElementById("supabaseKey").value = "";
+    document.getElementById('supabaseUrl').value = '';
+    document.getElementById('supabaseKey').value = '';
+
     updateAuthUi(null);
-    setConnectionStatus("Connection removed", "");
-    setAuthMessage("Database connection removed from this browser.", "success");
+    setConnectionStatus('Connection removed', '');
+    setAuthMessage('Database connection removed from this browser.', 'success');
+    showToast('Database connection removed.', 'success');
   }
 
   function saveSupabaseSettings() {
@@ -117,8 +173,10 @@
 
     localStorage.setItem(APP_CONFIG.supabaseUrlStorageKey, url);
     localStorage.setItem(APP_CONFIG.supabaseKeyStorageKey, key);
+    databaseSettingsManuallyOpened = false;
     initializeSupabase();
     setConnectionStatus('Saved', 'connected');
+    showToast('Database connection saved.', 'success');
   }
 
   async function testSupabaseConnection() {
@@ -151,6 +209,8 @@
       document.getElementById('savedQuotesBody').innerHTML =
         '<tr><td colspan="8">Sign in to view saved quotes.</td></tr>';
     }
+
+    updateDatabaseSetupVisibility();
   }
 
   async function signUpUser() {
@@ -209,7 +269,9 @@
       return;
     }
 
+    databaseSettingsManuallyOpened = false;
     setAuthMessage('Signed in.', 'success');
+    showToast('Signed in successfully.', 'success');
   }
 
   async function signOutUser() {
@@ -220,8 +282,10 @@
       return;
     }
     currentUser = null;
+    databaseSettingsManuallyOpened = true;
     updateAuthUi(null);
     setAuthMessage('Signed out.', 'success');
+    showToast('Signed out.', 'success');
   }
 
   function serializeQuoteForm() {
@@ -337,6 +401,7 @@
     setDbMessage('Saving quote…', '');
 
     const record = buildQuoteRecord();
+    const wasUpdating = Boolean(currentQuoteId);
     let query;
 
     if (currentQuoteId) {
@@ -358,13 +423,20 @@
 
     if (result.error) {
       setDbMessage(result.error.message, 'error');
+      showToast('Quote was not saved: ' + result.error.message, 'error');
       showTab('savedTab');
       return;
     }
 
     currentQuoteId = result.data.id;
     showCurrentRecord(result.data);
-    setDbMessage('Quote saved successfully.', 'success');
+
+    const confirmation =
+      (wasUpdating ? 'Quote updated: ' : 'Quote saved: ') +
+      (result.data.quote_number || record.quote_number);
+
+    setDbMessage(confirmation, 'success');
+    showToast(confirmation, 'success');
     await loadSavedQuotes();
   }
 

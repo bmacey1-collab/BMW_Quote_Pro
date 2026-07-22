@@ -74,37 +74,32 @@ When updating Netlify:
 4. Force-refresh the website with `Ctrl + Shift + R`.
 
 
-## Print update
-Customer Notes never print. Client results are compressed for one-page Letter portrait output.
+## BMW Quote Pro v2.2.1
 
+This release was built directly from the uploaded `BMW_Quote_Pro_v2_FIXED` baseline.
 
-## BMW Quote Pro v2.1
+### Included fixes
 
-### Automatic database reconnection
+- Explicit persistent Supabase login sessions
+- Automatic token refresh and reconnection
+- Production authentication redirect for `https://yourbmwguy.com`
+- Connection and login panels collapse after successful sign-in
+- Connection Settings button reopens the setup panels
+- New quote save confirmation with quote number
+- Existing quote update confirmation with quote number
+- Clear error notification when saving fails
+- Customer Notes excluded from all printing
+- Client quote compressed for one-page Letter portrait printing
+- Version labels updated to v2.2.1
 
-After you enter and save the Supabase Project URL and publishable/anon key once:
+### Supabase URL Configuration
 
-- The connection values remain in this browser.
-- The Supabase login session remains in this browser.
-- Access tokens refresh automatically.
-- The app reconnects when the page is reopened.
-- You only need to log in again after signing out, clearing browser data, changing browsers/devices, or having the Supabase session revoked.
+Set the Supabase Site URL to:
 
-Use **Forget Connection** only when you deliberately want to remove the saved project connection and login from that browser.
+`https://yourbmwguy.com`
 
-### yourbmwguy.com Supabase authentication setup
+Add these Redirect URLs:
 
-In Supabase Dashboard:
+`https://yourbmwguy.com/**`
 
-1. Open **Authentication → URL Configuration**.
-2. Set **Site URL** to:
-
-   `https://yourbmwguy.com`
-
-3. Add these Redirect URLs:
-
-   `https://yourbmwguy.com/**`
-
-   `https://yourbmwguy-pro.netlify.app/**`
-
-This allows confirmation links and authentication redirects to return to your hosted application.
+`https://yourbmwguy-pro.netlify.app/**`

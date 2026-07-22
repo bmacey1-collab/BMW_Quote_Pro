@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.2</title>
+  <title>BMW Quote Pro v2.2.1</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
@@ -12,8 +12,8 @@
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.2</h1>
-      <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select. Database sessions reconnect automatically.</div>
+      <h1>BMW Quote Pro v2.2.1</h1>
+      <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
 
@@ -52,19 +52,15 @@
 
     <h2>Customer / Vehicle</h2>
     <div class="grid">
-      <div class="field col-3">
+      <div class="field col-4">
         <label for="customerName">Customer Name</label>
         <input id="customerName" type="text" />
       </div>
-      <div class="field col-3">
-        <label for="customerEmail">Customer Email</label>
-        <input id="customerEmail" type="email" />
-      </div>
-      <div class="field col-3">
+      <div class="field col-4">
         <label for="vehicle">Vehicle</label>
         <input id="vehicle" type="text" />
       </div>
-      <div class="field col-3">
+      <div class="field col-4">
         <label for="vin">VIN</label>
         <input id="vin" type="text" />
       </div>
@@ -471,7 +467,6 @@
         <textarea id="quoteNotes" placeholder="Customer preferences, follow-up details, requested equipment, next steps..."></textarea>
       </div>
     </div>
-
     </div>
 
     <div id="currentRecordBanner" class="current-record-banner"></div>
@@ -534,9 +529,7 @@
       <div class="results-actions">
         <button type="button" class="btn-secondary" onclick="showTab('setupTab')">Back to Setup</button>
         <button type="button" class="btn-secondary" onclick="saveQuoteToDatabase()">Save Quote</button>
-        <button type="button" class="btn-primary" onclick="downloadQuotePdf()">Generate PDF</button>
-        <button type="button" class="btn-secondary" onclick="printQuotePdf()">Print PDF</button>
-        <button type="button" class="btn-secondary" onclick="emailQuotePdf()">Email PDF</button>
+        <button type="button" class="btn-primary" onclick="printQuote()">Print Results</button>
       </div>
     </div>
     <div class="quote-client-strip">
@@ -647,6 +640,7 @@
 
 
   <section id="savedTab" class="tab-panel">
+    <div id="connectionSetupSection">
     <h2>Supabase Connection</h2>
 
     <div class="connection-card">
@@ -667,10 +661,12 @@
         <span id="connectionStatus" class="connection-status">Checking saved connection…</span>
       </div>
       <div class="small-help">
-        Your connection and login session are remembered in this browser. After the first successful setup, BMW Quote Pro reconnects automatically. Use only the project URL and publishable/anon key—never a service-role key.
+        Your connection and login session are remembered in this browser. Use only the project URL and publishable/anon key—never a service-role key.
       </div>
     </div>
+    </div>
 
+    <div id="accountSetupSection">
     <h2>Account</h2>
     <div class="auth-card">
       <div id="signedOutArea">
@@ -698,6 +694,17 @@
         <button type="button" class="btn-secondary" style="margin-left:12px;" onclick="signOutUser()">Sign Out</button>
       </div>
       <div id="authMessage" class="database-message"></div>
+    </div>
+    </div>
+
+    <div id="databaseReadyBar" class="database-ready-bar" hidden>
+      <div>
+        <strong>Database connected</strong>
+        <span id="databaseReadyEmail"></span>
+      </div>
+      <button type="button" class="btn-secondary" onclick="showDatabaseSettings()">
+        Connection Settings
+      </button>
     </div>
 
     <h2>Saved Quotes</h2>
@@ -745,16 +752,15 @@
     <button type="button" class="btn-secondary" onclick="saveQuoteToDatabase()">Save Quote</button>
     <button type="button" class="btn-primary" onclick="showTab('resultsTab')">View Results</button>
   </div>
+  <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/presets.js"></script>
 <script src="js/calculations.js"></script>
 <script src="js/database.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/pdf.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

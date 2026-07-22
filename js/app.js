@@ -1,17 +1,17 @@
-window.addEventListener("online", function() {
-  const status = document.getElementById("connectionStatus");
+window.addEventListener('online', function() {
+  const status = document.getElementById('connectionStatus');
   if (status && supabaseClient) {
-    status.textContent = "Connected automatically";
-    status.classList.add("connected");
-    status.classList.remove("error");
+    status.textContent = 'Connected automatically';
+    status.classList.add('connected');
+    status.classList.remove('error');
   }
 });
 
-window.addEventListener("offline", function() {
-  const status = document.getElementById("connectionStatus");
+window.addEventListener('offline', function() {
+  const status = document.getElementById('connectionStatus');
   if (status) {
-    status.textContent = "Browser is offline";
-    status.classList.add("error");
+    status.textContent = 'Browser is offline';
+    status.classList.add('error');
   }
 });
 
@@ -45,5 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
   setDefaultQuoteDate();
   refreshPresetList();
   initializeSupabase();
+  updateDatabaseSetupVisibility();
   calculateAll();
 });
