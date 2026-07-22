@@ -72,39 +72,3 @@ When updating Netlify:
 2. Upload the entire `BMW_Quote_Pro_v2_FIXED` folder.
 3. Confirm that `index.html`, `css`, `js`, and `supabase` are at the published root.
 4. Force-refresh the website with `Ctrl + Shift + R`.
-
-
-## Print update
-Customer Notes never print. Client results are compressed for one-page Letter portrait output.
-
-
-## BMW Quote Pro v2.1
-
-### Automatic database reconnection
-
-After you enter and save the Supabase Project URL and publishable/anon key once:
-
-- The connection values remain in this browser.
-- The Supabase login session remains in this browser.
-- Access tokens refresh automatically.
-- The app reconnects when the page is reopened.
-- You only need to log in again after signing out, clearing browser data, changing browsers/devices, or having the Supabase session revoked.
-
-Use **Forget Connection** only when you deliberately want to remove the saved project connection and login from that browser.
-
-### yourbmwguy.com Supabase authentication setup
-
-In Supabase Dashboard:
-
-1. Open **Authentication → URL Configuration**.
-2. Set **Site URL** to:
-
-   `https://yourbmwguy.com`
-
-3. Add these Redirect URLs:
-
-   `https://yourbmwguy.com/**`
-
-   `https://yourbmwguy-pro.netlify.app/**`
-
-This allows confirmation links and authentication redirects to return to your hosted application.

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.1</title>
+  <title>Vehicle Quote Workspace</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
@@ -12,8 +12,8 @@
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.1</h1>
-      <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select. Database sessions reconnect automatically.</div>
+      <h1>Vehicle Quote Workspace</h1>
+      <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
 
@@ -459,15 +459,12 @@
     </div>
   </div>
 
-    <div class="private-notes-section">
     <h2>Customer Notes</h2>
     <div class="grid">
       <div class="field col-12 notes-field">
         <label for="quoteNotes">Notes</label>
         <textarea id="quoteNotes" placeholder="Customer preferences, follow-up details, requested equipment, next steps..."></textarea>
       </div>
-    </div>
-
     </div>
 
     <div id="currentRecordBanner" class="current-record-banner"></div>
@@ -657,11 +654,10 @@
       <div class="database-toolbar">
         <button type="button" class="btn-primary" onclick="saveSupabaseSettings()">Save Connection</button>
         <button type="button" class="btn-secondary" onclick="testSupabaseConnection()">Test Connection</button>
-        <button type="button" class="btn-secondary" onclick="forgetSupabaseConnection()">Forget Connection</button>
-        <span id="connectionStatus" class="connection-status">Checking saved connection…</span>
+        <span id="connectionStatus" class="connection-status">Not connected</span>
       </div>
       <div class="small-help">
-        Your connection and login session are remembered in this browser. After the first successful setup, BMW Quote Pro reconnects automatically. Use only the project URL and publishable/anon key—never a service-role key.
+        These settings are stored only in this browser. Use the project URL and publishable/anon key from Supabase Project Settings → API. Never place a service-role key in this page.
       </div>
     </div>
 
