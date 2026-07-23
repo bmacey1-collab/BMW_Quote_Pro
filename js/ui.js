@@ -11,8 +11,12 @@ function showTab(tabId) {
     calculateAll();
   }
 
-  if (tabId === "savedTab" && currentUser) {
-    loadSavedQuotes();
+  if (tabId === "savedTab" && currentUser) loadSavedQuotes();
+  if (tabId === "dashboardTab" && currentUser) loadDashboard();
+  if (tabId === "clientsTab" && currentUser) loadClients();
+  if (tabId === "emailTab") {
+    prepareEmailFromCurrentQuote();
+    if (currentUser) loadEmailHistory();
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -51,6 +55,7 @@ window.addEventListener("afterprint", function() {
 
 function clearForm() {
   currentQuoteId = null;
+  currentCustomerId = null;
   showCurrentRecord(null);
 
   document.querySelectorAll("input").forEach(function(input) {
@@ -82,6 +87,8 @@ function clearForm() {
 
   const notes = document.getElementById("quoteNotes");
   if (notes) notes.value = "";
+  const customerIdDisplay = document.getElementById("customerIdDisplay");
+  if (customerIdDisplay) customerIdDisplay.value = "";
 
   const combineNo = document.querySelector(
     'input[name="combine"][value="no"]'

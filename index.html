@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.2.2</title>
+  <title>BMW Quote Pro v2.3.0</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
@@ -12,13 +12,16 @@
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.2.2</h1>
+      <h1>BMW Quote Pro v2.3.0</h1>
       <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
 
   <div class="tabs">
     <button type="button" class="tab-button active" data-tab="setupTab">Deal Setup</button>
+    <button type="button" class="tab-button" data-tab="dashboardTab">Dashboard</button>
+    <button type="button" class="tab-button" data-tab="clientsTab">Clients</button>
+    <button type="button" class="tab-button" data-tab="emailTab">Email Center</button>
     <button type="button" class="tab-button" data-tab="resultsTab">Results</button>
     <button type="button" class="tab-button" data-tab="savedTab">Saved Quotes</button>
     <button type="button" class="tab-button" data-tab="aboutTab">About & Backup</button>
@@ -53,15 +56,27 @@
 
     <h2>Customer / Vehicle</h2>
     <div class="grid">
-      <div class="field col-4">
+      <div class="field col-3">
         <label for="customerName">Customer Name</label>
         <input id="customerName" type="text" />
       </div>
-      <div class="field col-4">
+      <div class="field col-3">
+        <label for="customerEmail">Customer Email</label>
+        <input id="customerEmail" type="email" autocomplete="email" />
+      </div>
+      <div class="field col-3">
+        <label for="customerPhone">Customer Phone</label>
+        <input id="customerPhone" type="tel" autocomplete="tel" />
+      </div>
+      <div class="field col-3">
+        <label for="customerIdDisplay">Client Record</label>
+        <input id="customerIdDisplay" type="text" readonly placeholder="Created when quote is saved" />
+      </div>
+      <div class="field col-6">
         <label for="vehicle">Vehicle</label>
         <input id="vehicle" type="text" />
       </div>
-      <div class="field col-4">
+      <div class="field col-6">
         <label for="vin">VIN</label>
         <input id="vin" type="text" />
       </div>
@@ -488,6 +503,7 @@
 
     <div class="database-save-actions actions">
       <button type="button" class="btn-secondary" onclick="duplicateCurrentQuote()">Duplicate as New</button>
+      <button type="button" class="btn-secondary" onclick="saveQuoteRevision()">Save Revision</button>
       <button type="button" class="btn-primary" onclick="saveQuoteToDatabase()">Save Quote</button>
     </div>
 
@@ -536,6 +552,114 @@
       </div>
     </div>
   </div>
+
+
+  <section id="dashboardTab" class="tab-panel">
+    <div class="results-toolbar">
+      <h2>Dashboard</h2>
+      <div class="results-actions">
+        <button type="button" class="btn-primary" onclick="showTab('setupTab'); clearForm();">New Quote</button>
+        <button type="button" class="btn-secondary" onclick="loadDashboard()">Refresh</button>
+      </div>
+    </div>
+
+    <div class="dashboard-metrics">
+      <div class="metric-card"><span>Quotes Today</span><strong id="metricQuotesToday">0</strong></div>
+      <div class="metric-card"><span>Pending Deals</span><strong id="metricPending">0</strong></div>
+      <div class="metric-card"><span>Clients</span><strong id="metricClients">0</strong></div>
+      <div class="metric-card"><span>Sold Quotes</span><strong id="metricSold">0</strong></div>
+    </div>
+
+    <h2>Recent Quotes</h2>
+    <div id="dashboardRecentQuotes" class="dashboard-list">
+      <div class="empty-state">Sign in to load your dashboard.</div>
+    </div>
+  </section>
+
+  <section id="clientsTab" class="tab-panel">
+    <div class="results-toolbar">
+      <h2>Clients & Quote History</h2>
+      <div class="results-actions">
+        <button type="button" class="btn-secondary" onclick="loadClients()">Refresh</button>
+      </div>
+    </div>
+
+    <div class="client-search-bar">
+      <input id="clientSearch" type="search" placeholder="Search name, email, phone, VIN, vehicle, or quote number" />
+      <button type="button" class="btn-primary" onclick="searchClients()">Search</button>
+      <button type="button" class="btn-secondary" onclick="document.getElementById('clientSearch').value=''; loadClients();">Show All</button>
+    </div>
+
+    <div class="client-layout">
+      <div id="clientList" class="client-list">
+        <div class="empty-state">No clients loaded.</div>
+      </div>
+
+      <div id="clientDetail" class="client-detail">
+        <div class="empty-state">Select a client to see all of their quotes together.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="emailTab" class="tab-panel">
+    <div class="results-toolbar">
+      <h2>Email Center</h2>
+      <div class="results-actions">
+        <button type="button" class="btn-secondary" onclick="loadEmailHistory()">Refresh History</button>
+      </div>
+    </div>
+
+    <div class="email-composer">
+      <div class="grid">
+        <div class="field col-6">
+          <label for="emailTo">To</label>
+          <input id="emailTo" type="email" />
+        </div>
+        <div class="field col-6">
+          <label for="emailSubject">Subject</label>
+          <input id="emailSubject" type="text" value="Your BMW Quote" />
+        </div>
+        <div class="field col-4">
+          <label for="emailTemplate">Template</label>
+          <select id="emailTemplate" onchange="applyEmailTemplate()">
+            <option value="">Choose a template</option>
+            <option value="initial">Initial Quote</option>
+            <option value="revised">Revised Quote</option>
+            <option value="lease">Lease Quote</option>
+            <option value="finance">Finance Quote</option>
+            <option value="cash">Cash Purchase</option>
+            <option value="followup">Follow-Up</option>
+          </select>
+        </div>
+        <div class="field col-4">
+          <label>Email Options</label>
+          <div class="checkbox-row">
+            <label><input id="includeQuoteSummary" type="checkbox" checked /> Include Quote Summary</label>
+          </div>
+        </div>
+        <div class="field col-4">
+          <label>Current Quote</label>
+          <div id="emailQuoteReference" class="email-reference">No quote selected</div>
+        </div>
+        <div class="field col-12 notes-field">
+          <label for="emailMessage">Message / Personal Note</label>
+          <textarea id="emailMessage" placeholder="Write a personal note to the customer..."></textarea>
+        </div>
+      </div>
+
+      <div class="email-actions">
+        <button type="button" class="btn-secondary" onclick="copyEmailText()">Copy Email</button>
+        <button type="button" class="btn-primary" onclick="openEmailApplication()">Open Email App</button>
+        <button type="button" class="btn-secondary" onclick="recordEmailAsSent()">Record as Sent</button>
+      </div>
+      <div id="emailMessageStatus" class="database-message"></div>
+    </div>
+
+    <h2>Email History</h2>
+    <div id="emailHistory" class="email-history">
+      <div class="empty-state">Open a saved quote or client to view communication history.</div>
+    </div>
+  </section>
 
   <section id="resultsTab" class="tab-panel">
   <div id="breakdownResults" class="breakdown-results">
@@ -798,6 +922,9 @@
 <script src="js/presets.js"></script>
 <script src="js/calculations.js"></script>
 <script src="js/database.js"></script>
+<script src="js/customers.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/email.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/app.js"></script>
 </body>

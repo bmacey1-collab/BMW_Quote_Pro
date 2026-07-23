@@ -351,7 +351,8 @@
       pad(now.getSeconds());
   }
 
-  function buildQuoteRecord() {
+  function buildQuoteRecord(options) {
+    options = options || {};
     let quoteNumber = document.getElementById('quoteNumber').value.trim();
     if (!quoteNumber) {
       quoteNumber = generateQuoteNumber();
@@ -360,9 +361,15 @@
 
     return {
       user_id: currentUser.id,
+      customer_id: currentCustomerId || null,
       quote_number: quoteNumber,
+      revision_root_id: options.revisionRootId || null,
+      revision_number: options.revisionNumber || 1,
+      revised_from_id: options.revisedFromId || null,
       quote_date: document.getElementById('quoteDate').value || null,
       customer_name: document.getElementById('customerName').value.trim(),
+      customer_email: document.getElementById('customerEmail').value.trim(),
+      customer_phone: document.getElementById('customerPhone').value.trim(),
       salesperson: document.getElementById('salesperson').value.trim(),
       status: document.getElementById('quoteStatus').value,
       vehicle: document.getElementById('vehicle').value.trim(),
@@ -432,13 +439,21 @@
     return true;
   }
 
-  async function saveQuoteToDatabase() {
+  async function saveQuoteToDatabase(options) {
     if (!(await ensureDatabaseReady())) return;
 
     calculateAll();
     setDbMessage('Saving quote…', '');
 
-    const record = buildQuoteRecord();
+    try {
+      await findOrCreateCustomer();
+    } catch (error) {
+      setDbMessage(error.message, 'error');
+      showToast('Client record could not be saved.', 'error');
+      return;
+    }
+
+    const record = buildQuoteRecord(options);
     const wasUpdating = Boolean(currentQuoteId);
     let query;
 
@@ -612,8 +627,13 @@
       const record = await fetchFullQuote(id);
       currentQuoteId = record.id;
       restoreQuoteForm(record.form_data);
+      currentCustomerId = record.customer_id || null;
+      document.getElementById('customerIdDisplay').value = record.customer_id || '';
+      document.getElementById('customerEmail').value = record.customer_email || '';
+      document.getElementById('customerPhone').value = record.customer_phone || '';
       document.getElementById('quoteNotes').value = record.notes || '';
       showCurrentRecord(record);
+      prepareEmailFromCurrentQuote();
       showTab('setupTab');
       setDbMessage('Quote opened.', 'success');
     } catch (error) {

@@ -113,3 +113,33 @@ Build date: 2026-07-23
 - About & Backup tab
 - Version/build/changelog/database/user/project diagnostics
 - Export Saved Quotes and Back Up Settings
+
+
+## BMW Quote Pro v2.3.0 — Client & Communication Center
+
+Build date: 2026-07-23
+
+### Added
+
+- Dashboard with recent quotes and key counts
+- Client records with name, email, and phone
+- All saved quotes grouped under the client
+- Quote revision history
+- Save Revision button
+- Email Center with editable personal note
+- Email templates for initial, revised, lease, finance, cash, and follow-up messages
+- Quote summary inserted into the email body
+- Email history recorded against the client and quote
+- Open Email App and Copy Email actions
+
+### Required Supabase update
+
+Existing installations must run:
+
+`supabase/migrations/002_customers_revisions_email.sql`
+
+in Supabase SQL Editor once before using Clients, Revisions, or Email History.
+
+### Email limitation
+
+This version opens the computer's configured email application using a completed `mailto:` message. Browsers cannot reliably attach a generated quote PDF through `mailto:`. Direct Gmail sending and PDF attachments require a later OAuth/server integration.
