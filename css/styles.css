@@ -889,4 +889,102 @@
     grid-template-columns: 1fr;
   }
 }
-\n\n.pdf-export-container {\n  width: 10.56in;\n  padding: 0;\n  background: #fff;\n}\n.pdf-export-container .quote-comparison {\n  display: grid !important;\n  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;\n  gap: 10px !important;\n}\n.pdf-export-container .quote-option { box-shadow: none !important; }\n.pdf-export-container .quote-option-title { font-size: 15px !important; padding: 9px 5px !important; }\n.pdf-export-container .quote-option-payment { font-size: 30px !important; padding: 9px 3px 3px !important; }\n.pdf-export-container .payment-label { font-size: 10px !important; }\n.pdf-export-container .quote-option-body { font-size: 10.5px !important; line-height: 1.18 !important; padding: 8px 11px 10px !important; }\n.pdf-export-container .quote-option-body > div { padding: 2px 0 !important; }\n.pdf-export-container .quote-client-strip { font-size: 11px !important; padding: 9px 12px !important; }\n.pdf-export-container .quote-footer { font-size: 8px !important; padding: 7px 10px !important; }\n
+
+.pdf-export-wrapper {
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.pdf-export-container {
+  box-sizing: border-box;
+  width: 10.56in;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.pdf-export-container .quote-client-strip {
+  margin: 0 0 9px !important;
+  padding: 9px 12px !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+.pdf-export-container .quote-comparison {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 9px !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+
+.pdf-export-container .quote-option {
+  min-width: 0 !important;
+  width: auto !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+}
+
+.pdf-export-container .quote-option-title {
+  padding: 8px 5px !important;
+  font-size: 14px !important;
+}
+
+.pdf-export-container .quote-option-payment {
+  padding: 8px 3px 3px !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+
+.pdf-export-container .payment-label,
+.pdf-export-container .payment-caption {
+  padding-bottom: 5px !important;
+  font-size: 9px !important;
+}
+
+.pdf-export-container .payment-difference {
+  font-size: 9px !important;
+}
+
+.pdf-export-container .one-pay-detail {
+  margin: 0 7px 6px !important;
+  padding: 5px !important;
+  font-size: 9px !important;
+}
+
+.pdf-export-container .quote-option-body {
+  padding: 7px 10px 9px !important;
+  font-size: 10px !important;
+  line-height: 1.16 !important;
+}
+
+.pdf-export-container .quote-option-body > div {
+  gap: 7px !important;
+  padding: 2px 0 !important;
+  margin: 0 !important;
+}
+
+.pdf-export-container .quote-option-body strong {
+  white-space: nowrap !important;
+}
+
+.pdf-export-container .pricing-total {
+  margin-top: 4px !important;
+  padding-top: 4px !important;
+  font-size: 11px !important;
+}
+
+.pdf-export-container .due-up-front-total {
+  margin-top: 5px !important;
+  padding: 6px !important;
+  font-size: 11px !important;
+}
+
+.pdf-export-container .quote-footer {
+  margin-top: 8px !important;
+  padding: 7px 10px !important;
+  font-size: 8px !important;
+  line-height: 1.2 !important;
+}
+

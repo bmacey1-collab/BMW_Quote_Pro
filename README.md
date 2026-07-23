@@ -161,3 +161,11 @@ This version opens the computer's configured email application using a completed
 - Corrected lease upfront tax: trade equity is not included in the taxable upfront amount.
 
 Browser security does not allow mailto or Gmail compose links to automatically attach a local PDF.
+
+
+## v2.3.3 PDF fix
+
+- Create PDF now renders the quote to one image.
+- The image is proportionally scaled and centered on one landscape Letter page.
+- The on-screen Results toolbar is removed from the PDF.
+- Print Results behavior is unchanged.
