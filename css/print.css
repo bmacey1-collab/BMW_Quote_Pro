@@ -1,13 +1,10 @@
 @media print {
-  @page {
-    size: letter portrait;
-    margin: 0.22in;
-  }
+  @page { size: letter landscape; margin: 0.22in; }
 
-  html,
-  body {
+  html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
     background: #fff;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -23,63 +20,35 @@
     box-shadow: none;
   }
 
-  .app-toast,
-  .database-ready-bar,
-  .private-notes-section,
-  .notes-field,
-  #quoteNotes,
-  #savedTab,
-  #aboutTab,
-  #dashboardTab,
-  #clientsTab,
-  #emailTab,
-  .database-save-actions,
-  .current-record-banner,
-  .tabs,
-  .actions,
-  .results-actions,
-  .app-header,
-  .connection-card,
-  .auth-card,
-  .saved-quotes-card {
-    display: none !important;
-  }
+  .app-toast, .database-ready-bar, .private-notes-section, .notes-field,
+  #quoteNotes, #savedTab, #aboutTab, #dashboardTab, #clientsTab, #emailTab,
+  .database-save-actions, .current-record-banner, .tabs, .actions,
+  .results-actions, .app-header, .connection-card, .auth-card,
+  .saved-quotes-card, .results-toolbar { display: none !important; }
 
   body.print-quote #setupTab,
   body.print-quote .input-section,
-  body.print-quote .screen-results {
-    display: none !important;
-  }
+  body.print-quote .screen-results { display: none !important; }
 
-  body.print-quote #resultsTab {
-    display: block !important;
-  }
-
-  body.print-quote .results-toolbar {
-    display: none !important;
-  }
-
-  body.print-quote .breakdown-results {
-    margin: 0;
-    padding: 0;
-  }
+  body.print-quote #resultsTab { display: block !important; }
+  body.print-quote .breakdown-results { margin: 0; padding: 0; }
 
   body.print-quote .quote-client-strip {
-    margin: 0 0 6px;
-    padding: 6px 8px;
-    font-size: 9px;
-    line-height: 1.15;
+    margin: 0 0 9px;
+    padding: 9px 12px;
+    font-size: 11px;
+    line-height: 1.2;
     break-inside: avoid;
   }
 
   body.print-quote .quote-comparison {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 5px !important;
+    gap: 9px !important;
     width: 100% !important;
     min-width: 0 !important;
     overflow: visible !important;
-    align-items: start;
+    align-items: stretch;
   }
 
   body.print-quote .quote-option {
@@ -87,104 +56,70 @@
     width: auto !important;
     margin: 0 !important;
     box-shadow: none;
-    border-radius: 7px;
+    border-radius: 10px;
     break-inside: avoid;
   }
 
   body.print-quote .quote-option-title {
-    padding: 5px 3px !important;
-    font-size: 11px !important;
+    padding: 8px 5px !important;
+    font-size: 14px !important;
   }
 
   body.print-quote .quote-option-payment {
-    padding: 5px 2px 1px !important;
-    font-size: 20px !important;
+    padding: 8px 3px 3px !important;
+    font-size: 28px !important;
     line-height: 1 !important;
   }
 
   body.print-quote .payment-label {
-    padding-bottom: 3px !important;
-    font-size: 7px !important;
+    padding-bottom: 5px !important;
+    font-size: 10px !important;
   }
 
   body.print-quote .one-pay-detail {
-    margin: 0 4px 3px !important;
-    padding: 3px !important;
-    font-size: 7px !important;
+    margin: 0 7px 6px !important;
+    padding: 5px !important;
+    font-size: 9px !important;
   }
 
   body.print-quote .quote-option-body {
-    padding: 4px 6px 6px !important;
-    font-size: 7.8px !important;
-    line-height: 1.08 !important;
+    padding: 7px 10px 9px !important;
+    font-size: 10px !important;
+    line-height: 1.16 !important;
   }
 
   body.print-quote .quote-option-body > div {
-    gap: 4px !important;
-    padding: 1px 0 !important;
+    gap: 7px !important;
+    padding: 2px 0 !important;
     margin: 0 !important;
   }
 
-  body.print-quote .quote-option-body strong {
-    white-space: nowrap;
-  }
-
+  body.print-quote .quote-option-body strong { white-space: nowrap; }
   body.print-quote .pricing-total {
-    margin-top: 2px !important;
-    padding-top: 2px !important;
-    font-size: 8px !important;
-  }
-
-  body.print-quote .due-up-front-total {
-    margin-top: 3px !important;
-    padding: 4px !important;
-    font-size: 8px !important;
-  }
-
-  body.print-quote .quote-footer {
     margin-top: 4px !important;
-    padding: 4px 6px !important;
-    font-size: 6.5px !important;
-    line-height: 1.1 !important;
+    padding-top: 4px !important;
+    font-size: 11px !important;
+  }
+  body.print-quote .due-up-front-total {
+    margin-top: 5px !important;
+    padding: 6px !important;
+    font-size: 11px !important;
+  }
+  body.print-quote .quote-footer {
+    margin-top: 8px !important;
+    padding: 7px 10px !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
     break-inside: avoid;
   }
 
   body.print-worksheet #resultsTab,
   body.print-worksheet .screen-results,
-  body.print-worksheet .breakdown-results {
-    display: none !important;
-  }
-
-  body.print-worksheet #setupTab {
-    display: block !important;
-  }
-
-  body.print-worksheet h2 {
-    margin: 4px 0 2px;
-    padding-bottom: 2px;
-    font-size: 10px;
-  }
-
-  body.print-worksheet .grid {
-    gap: 3px;
-  }
-
+  body.print-worksheet .breakdown-results { display: none !important; }
+  body.print-worksheet #setupTab { display: block !important; }
+  body.print-worksheet h2 { margin: 4px 0 2px; font-size: 10px; }
+  body.print-worksheet .grid { gap: 3px; }
   body.print-worksheet input,
-  body.print-worksheet select {
-    height: 21px;
-    padding: 2px 4px;
-    border: 1px solid #999;
-    font-size: 7.5px;
-  }
-
-  body.print-worksheet label {
-    font-size: 7.5px;
-  }
-
-  body.print-worksheet .radio-row,
-  body.print-worksheet .checkbox-row {
-    min-height: 21px;
-    padding: 1px 4px;
-    gap: 6px;
-  }
+  body.print-worksheet select { height: 21px; padding: 2px 4px; border: 1px solid #999; font-size: 7.5px; }
+  body.print-worksheet label { font-size: 7.5px; }
 }

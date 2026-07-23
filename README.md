@@ -151,3 +151,13 @@ This version opens the computer's configured email application using a completed
 - This restores Save Quote, Save Revision, Copy Email, Open Email App, and Open Gmail.
 - Added an Open Gmail option for computers without a configured default email application.
 - Added visible notifications for unhandled JavaScript errors.
+
+
+## v2.3.2
+
+- Restored full landscape quote printing.
+- Added Create PDF buttons in Results and Email Center.
+- PDF downloads as a landscape Letter file and can be manually attached to email.
+- Corrected lease upfront tax: trade equity is not included in the taxable upfront amount.
+
+Browser security does not allow mailto or Gmail compose links to automatically attach a local PDF.

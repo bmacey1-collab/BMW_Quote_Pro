@@ -198,7 +198,7 @@ function getNum(id) {
     const moneyFactor = getNum('moneyFactor');
     const feesIncluded = checked('feesIncluded') === 'yes';
 
-    const leaseTaxBase = d.cashDown + d.positiveTradeEquity + d.acquisitionFee + d.commonFees;
+    const leaseTaxBase = d.cashDown + d.acquisitionFee + d.commonFees;
     const leaseUpfrontTax = leaseTaxBase * d.taxRate;
     const leaseFeesTotal = d.acquisitionFee + d.commonFees + leaseUpfrontTax;
     const leaseCapCost =

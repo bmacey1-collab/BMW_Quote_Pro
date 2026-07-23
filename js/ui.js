@@ -53,6 +53,56 @@ window.addEventListener("afterprint", function() {
   document.body.classList.remove("print-worksheet", "print-quote");
 });
 
+
+async function createQuotePdf() {
+  try {
+    calculateAll();
+
+    if (typeof html2pdf === "undefined") {
+      throw new Error("PDF library did not load. Refresh the page and try again.");
+    }
+
+    const source = document.querySelector("#resultsTab .breakdown-results");
+    if (!source) throw new Error("Quote results could not be found.");
+
+    const clone = source.cloneNode(true);
+    clone.classList.add("pdf-export-container");
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "fixed";
+    wrapper.style.left = "-100000px";
+    wrapper.style.top = "0";
+    wrapper.style.width = "10.56in";
+    wrapper.style.background = "#fff";
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    const quoteNumber = document.getElementById("quoteNumber").value.trim() || "BMW-Quote";
+    const customer = document.getElementById("customerName").value.trim().replace(/[^a-z0-9]+/gi, "-");
+    const filename = (customer ? customer + "-" : "") + quoteNumber + ".pdf";
+
+    await html2pdf().set({
+      margin: [0.22, 0.22, 0.22, 0.22],
+      filename: filename,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+    }).from(clone).save();
+
+    wrapper.remove();
+    if (typeof showToast === "function") showToast("Quote PDF downloaded.", "success");
+    const emailStatus = document.getElementById("emailMessageStatus");
+    if (emailStatus) {
+      emailStatus.textContent = "PDF downloaded. Attach it manually after Gmail or your email application opens.";
+      emailStatus.className = "database-message success";
+    }
+  } catch (error) {
+    console.error("PDF creation failed:", error);
+    if (typeof showToast === "function") showToast(error.message || "PDF creation failed.", "error");
+  }
+}
+
 function clearForm() {
   currentQuoteId = null;
   currentCustomerId = null;
