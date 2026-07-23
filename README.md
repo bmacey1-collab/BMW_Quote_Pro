@@ -143,3 +143,11 @@ in Supabase SQL Editor once before using Clients, Revisions, or Email History.
 ### Email limitation
 
 This version opens the computer's configured email application using a completed `mailto:` message. Browsers cannot reliably attach a generated quote PDF through `mailto:`. Direct Gmail sending and PDF attachments require a later OAuth/server integration.
+
+
+## v2.3.1 Fix
+
+- Corrected a missing `quoteRetailTitle` element ID that caused `calculateAll()` to stop.
+- This restores Save Quote, Save Revision, Copy Email, Open Email App, and Open Gmail.
+- Added an Open Gmail option for computers without a configured default email application.
+- Added visible notifications for unhandled JavaScript errors.

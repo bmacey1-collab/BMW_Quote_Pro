@@ -164,16 +164,77 @@ async function copyEmailText() {
   showToast('Email copied.', 'success');
 }
 
+function getEmailComposeValues() {
+  return {
+    to: document.getElementById('emailTo').value.trim(),
+    subject: document.getElementById('emailSubject').value.trim(),
+    body: getComposedEmailBody()
+  };
+}
+
+function validateEmailComposer(values) {
+  if (!values.to) {
+    setEmailStatus('Enter the customer email address first.', 'error');
+    showToast('Customer email address is missing.', 'error');
+    return false;
+  }
+
+  return true;
+}
+
 function openEmailApplication() {
-  const to = document.getElementById('emailTo').value.trim();
-  const subject = document.getElementById('emailSubject').value.trim();
-  const body = getComposedEmailBody();
+  try {
+    const values = getEmailComposeValues();
+    if (!validateEmailComposer(values)) return;
 
-  const url = 'mailto:' + encodeURIComponent(to) +
-    '?subject=' + encodeURIComponent(subject) +
-    '&body=' + encodeURIComponent(body);
+    const url = 'mailto:' + encodeURIComponent(values.to) +
+      '?subject=' + encodeURIComponent(values.subject) +
+      '&body=' + encodeURIComponent(values.body);
 
-  window.location.href = url;
+    const link = document.createElement('a');
+    link.href = url;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setEmailStatus(
+      'The message was sent to your computer’s default email application. If nothing opened, use Open Gmail.',
+      'success'
+    );
+  } catch (error) {
+    setEmailStatus(error.message, 'error');
+    showToast('Unable to open the email application.', 'error');
+  }
+}
+
+function openGmailComposer() {
+  try {
+    const values = getEmailComposeValues();
+    if (!validateEmailComposer(values)) return;
+
+    const url =
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=' + encodeURIComponent(values.to) +
+      '&su=' + encodeURIComponent(values.subject) +
+      '&body=' + encodeURIComponent(values.body);
+
+    const popup = window.open(url, '_blank', 'noopener,noreferrer');
+
+    if (!popup) {
+      setEmailStatus(
+        'Your browser blocked the Gmail window. Allow pop-ups for this site and try again.',
+        'error'
+      );
+      showToast('Gmail pop-up was blocked.', 'error');
+      return;
+    }
+
+    setEmailStatus('Gmail opened in a new browser tab.', 'success');
+  } catch (error) {
+    setEmailStatus(error.message, 'error');
+    showToast('Unable to open Gmail.', 'error');
+  }
 }
 
 function setEmailStatus(message, type) {

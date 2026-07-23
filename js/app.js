@@ -1,3 +1,15 @@
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('BMW Quote Pro promise error:', event.reason);
+
+  const message = event.reason && event.reason.message
+    ? event.reason.message
+    : String(event.reason || 'Unexpected application error');
+
+  if (typeof showToast === 'function') {
+    showToast(message, 'error');
+  }
+});
+
 window.addEventListener('online', function() {
   const status = document.getElementById('connectionStatus');
   if (status && supabaseClient) {

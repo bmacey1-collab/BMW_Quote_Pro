@@ -455,7 +455,7 @@ function getNum(id) {
       document.getElementById('quoteRetailTerm').textContent = 'Cash Purchase';
       document.getElementById('quoteRetailApr').textContent = '';
     } else {
-      retailTitle.textContent = 'Finance';
+      if (retailTitle) retailTitle.textContent = 'Finance';
       document.getElementById('quoteRetailPayment').textContent = money(r.retailPayment);
       retailPaymentLabel.textContent = 'PER MONTH';
       document.getElementById('quoteRetailTerm').textContent = r.financeMonths + ' months';

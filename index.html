@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.3.0</title>
+  <title>BMW Quote Pro v2.3.1</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
@@ -12,7 +12,7 @@
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.3.0</h1>
+      <h1>BMW Quote Pro v2.3.1</h1>
       <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
@@ -650,6 +650,7 @@
       <div class="email-actions">
         <button type="button" class="btn-secondary" onclick="copyEmailText()">Copy Email</button>
         <button type="button" class="btn-primary" onclick="openEmailApplication()">Open Email App</button>
+        <button type="button" class="btn-secondary" onclick="openGmailComposer()">Open Gmail</button>
         <button type="button" class="btn-secondary" onclick="recordEmailAsSent()">Record as Sent</button>
       </div>
       <div id="emailMessageStatus" class="database-message"></div>
@@ -715,7 +716,7 @@
       </div>
 
       <div id="quoteRetailCard" class="quote-option retail-card">
-        <div class="quote-option-title">RETAIL FINANCE</div>
+        <div id="quoteRetailTitle" class="quote-option-title">RETAIL FINANCE</div>
         <div class="quote-option-payment" id="quoteRetailPayment">$0.00</div>
           <div id="quoteRetailPaymentLabel" class="payment-label">PER MONTH</div>
         <div class="payment-caption">PER MONTH</div>
@@ -897,6 +898,7 @@
     </div>
     <h2>Changelog</h2>
     <div class="changelog-card">
+      <h3>v2.3.1</h3><ul><li>Fixed Save Quote and Email buttons.</li><li>Added Open Gmail browser option.</li><li>Added clearer runtime error notifications.</li></ul>
       <h3>v2.2.2</h3><ul><li>Added Cash Purchase inside Finance.</li><li>Renamed cards to Lease, Finance, and BMW Select.</li><li>Added About & Backup diagnostics.</li><li>Added quote export and settings backup.</li></ul>
       <h3>v2.2.1</h3><ul><li>Persistent login and automatic reconnection.</li><li>Collapsed connection settings after sign-in.</li><li>Save/update confirmations.</li><li>One-page printing and private notes excluded.</li></ul>
     </div>
