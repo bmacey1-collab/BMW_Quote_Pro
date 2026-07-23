@@ -211,3 +211,10 @@ Use:
 3. Landscape
 4. Letter
 5. Headers and footers off
+
+
+## v2.4.1 Email Quote restoration
+
+- Restored **Email Quote** on the Results toolbar.
+- Added an Email shortcut to the mobile bottom navigation.
+- The button opens Email Center and automatically fills the current customer email, subject, quote number, and initial message.

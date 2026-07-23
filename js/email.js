@@ -1,3 +1,32 @@
+
+function emailCurrentQuote() {
+  try {
+    calculateAll();
+    prepareEmailFromCurrentQuote();
+
+    const email = document.getElementById('customerEmail').value.trim();
+    const quoteNumber = document.getElementById('quoteNumber').value.trim();
+
+    if (!email) {
+      setEmailStatus(
+        'Enter the customer email address in Deal Setup before emailing the quote.',
+        'error'
+      );
+      showToast('Customer email address is missing.', 'error');
+    }
+
+    document.getElementById('emailQuoteReference').textContent =
+      quoteNumber || 'Unsaved quote';
+
+    showTab('emailTab');
+  } catch (error) {
+    console.error('Unable to prepare email quote:', error);
+    if (typeof showToast === 'function') {
+      showToast(error.message || 'Unable to prepare the email quote.', 'error');
+    }
+  }
+}
+
 const EMAIL_TEMPLATES = {
   initial:
 `Hi {firstName},

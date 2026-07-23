@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.4.0</title>
+  <title>BMW Quote Pro v2.4.1</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
@@ -20,7 +20,7 @@
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.4.0</h1>
+      <h1>BMW Quote Pro v2.4.1</h1>
       <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
@@ -679,7 +679,10 @@
         <button type="button" class="btn-secondary" onclick="showTab('setupTab')">Back to Setup</button>
         <button type="button" class="btn-secondary" onclick="saveQuoteToDatabase()">Save Quote</button>
         <button type="button" class="btn-primary" onclick="printQuote()">Print Results</button>
-      </div>
+      
+        <button type="button" class="btn-primary" onclick="emailCurrentQuote()">
+          Email Quote
+        </button></div>
     </div>
     <div class="quote-client-strip">
       <div>
@@ -907,6 +910,12 @@
     </div>
     <h2>Changelog</h2>
     <div class="changelog-card">
+      <h3>v2.4.1</h3>
+      <ul>
+        <li>Restored the Email Quote button on the Results screen.</li>
+        <li>Added a mobile Email shortcut.</li>
+        <li>Email Quote now pre-fills the customer, subject, quote reference, and message template.</li>
+      </ul>
       <h3>v2.4.0</h3>
       <ul>
         <li>Added responsive mobile layouts and touch-friendly controls.</li>
@@ -954,9 +963,9 @@
       <span aria-hidden="true">👤</span>
       <small>Clients</small>
     </button>
-    <button type="button" onclick="showTab('savedTab')">
-      <span aria-hidden="true">★</span>
-      <small>Saved</small>
+    <button type="button" onclick="emailCurrentQuote()">
+      <span aria-hidden="true">✉</span>
+      <small>Email</small>
     </button>
   </nav>
 
