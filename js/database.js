@@ -211,6 +211,7 @@
     }
 
     updateDatabaseSetupVisibility();
+    updateAboutDiagnostics();
   }
 
   async function signUpUser() {
@@ -369,6 +370,43 @@
       notes: document.getElementById('quoteNotes').value.trim(),
       form_data: serializeQuoteForm()
     };
+  }
+
+  function getConnectedProjectReference() {
+    const settings = getSupabaseSettings();
+    if (!settings.url) return '';
+    try { return new URL(settings.url).hostname; } catch (error) { return settings.url; }
+  }
+
+  function updateAboutDiagnostics() {
+    const map = { aboutVersion: APP_CONFIG.version, aboutBuildDate: APP_CONFIG.buildDate };
+    Object.keys(map).forEach(function(id){ const el=document.getElementById(id); if(el) el.textContent=map[id]; });
+    const dbs=document.getElementById('aboutDatabaseStatus'); if(dbs) dbs.textContent=supabaseClient ? (currentUser ? 'Connected and authenticated' : 'Connected — not signed in') : 'Not connected';
+    const user=document.getElementById('aboutSignedInUser'); if(user) user.textContent=currentUser ? (currentUser.email || currentUser.id) : 'Not signed in';
+    const project=document.getElementById('aboutSupabaseProject'); if(project) project.textContent=getConnectedProjectReference() || 'Not configured';
+  }
+
+  function downloadJsonFile(filename,data){
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+
+  function setBackupMessage(message,type){ const el=document.getElementById('backupMessage'); if(!el)return; el.textContent=message||''; el.className='database-message'+(type?' '+type:''); }
+
+  async function exportDatabaseQuotes(){
+    if(!(await ensureDatabaseReady())){ showTab('aboutTab'); setBackupMessage('Connect and sign in before exporting quotes.','error'); return; }
+    setBackupMessage('Preparing quote export…','');
+    const result=await supabaseClient.from('quotes').select('*').order('updated_at',{ascending:false});
+    if(result.error){ setBackupMessage(result.error.message,'error'); showToast('Database export failed.','error'); return; }
+    const stamp=new Date().toISOString().slice(0,10);
+    downloadJsonFile('bmw-quote-pro-quotes-'+stamp+'.json',{app:APP_CONFIG.appName,version:APP_CONFIG.version,exported_at:new Date().toISOString(),user:currentUser?currentUser.email:null,project:getConnectedProjectReference(),quotes:result.data||[]});
+    setBackupMessage((result.data||[]).length+' quote(s) exported.','success'); showToast('Saved quotes exported.','success');
+  }
+
+  function backupApplicationSettings(){
+    const settings=getSupabaseSettings();
+    const backup={app:APP_CONFIG.appName,version:APP_CONFIG.version,backed_up_at:new Date().toISOString(),supabase:{url:settings.url,publishable_key:settings.key},presets:getPresetStorage(),display:{displayLease:document.getElementById('displayLease').checked,displayRetail:document.getElementById('displayRetail').checked,displaySelect:document.getElementById('displaySelect').checked,showLeaseDetails:document.getElementById('showLeaseDetails').checked,showRetailRate:document.getElementById('showRetailRate').checked,showSelectDetails:document.getElementById('showSelectDetails').checked}};
+    const stamp=new Date().toISOString().slice(0,10); downloadJsonFile('bmw-quote-pro-settings-'+stamp+'.json',backup); setBackupMessage('Application settings backed up.','success'); showToast('Settings backup downloaded.','success');
   }
 
   async function ensureDatabaseReady() {

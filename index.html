@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.2.1</title>
+  <title>BMW Quote Pro v2.2.2</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
@@ -12,7 +12,7 @@
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.2.1</h1>
+      <h1>BMW Quote Pro v2.2.2</h1>
       <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
@@ -21,6 +21,7 @@
     <button type="button" class="tab-button active" data-tab="setupTab">Deal Setup</button>
     <button type="button" class="tab-button" data-tab="resultsTab">Results</button>
     <button type="button" class="tab-button" data-tab="savedTab">Saved Quotes</button>
+    <button type="button" class="tab-button" data-tab="aboutTab">About & Backup</button>
   </div>
 
   <section id="setupTab" class="tab-panel active">
@@ -163,16 +164,16 @@
       </div>
 
       <div class="field col-4">
-        <label>Retail Finance</label>
+        <label>Finance</label>
         <div class="checkbox-row">
-          <label><input id="displayRetail" type="checkbox" checked /> Calculate and display Retail</label>
+          <label><input id="displayRetail" type="checkbox" checked /> Calculate and display Finance</label>
         </div>
       </div>
 
       <div class="field col-4">
-        <label>Select Financing</label>
+        <label>BMW Select</label>
         <div class="checkbox-row">
-          <label><input id="displaySelect" type="checkbox" checked /> Calculate and display Select</label>
+          <label><input id="displaySelect" type="checkbox" checked /> Calculate and display BMW Select</label>
         </div>
       </div>
     </div>
@@ -274,8 +275,22 @@
     </div>
 
     <div id="retailInputSection" class="deal-input-section">
-    <h2>Retail Finance Terms</h2>
+    <h2>Finance Terms</h2>
     <div class="grid">
+      <div class="field col-4">
+        <label>Purchase Type</label>
+        <div class="checkbox-row cash-purchase-control">
+          <label><input id="cashPurchase" type="checkbox" /> Cash Purchase</label>
+        </div>
+      </div>
+      <div class="field col-4">
+        <label for="cashPurchaseTotal">Total Cash Due</label>
+        <input id="cashPurchaseTotal" type="text" readonly />
+      </div>
+      <div class="field col-4">
+        <label>Finance Display</label>
+        <div class="small-help">When Cash Purchase is selected, APR, term, and monthly payment are replaced by Total Cash Due.</div>
+      </div>
       <div class="field col-3">
         <label for="retailIncentiveName1">Retail Incentive 1 Name</label>
         <input id="retailIncentiveName1" type="text" placeholder="Example: Loyalty Credit" />
@@ -304,11 +319,11 @@
         <label for="retailSellingPrice">Retail Selling Price</label>
         <input id="retailSellingPrice" type="text" readonly />
       </div>
-      <div class="field col-3">
+      <div id="financeMonthsField" class="field col-3">
         <label for="financeMonths">Finance Months</label>
         <input id="financeMonths" type="number" min="1" step="1" value="60" />
       </div>
-      <div class="field col-3">
+      <div id="financeAprField" class="field col-3">
         <label for="aprRate">APR %</label>
         <input id="aprRate" type="number" min="0" step=".01" />
       </div>
@@ -324,7 +339,7 @@
     </div>
 
     <div id="selectInputSection" class="deal-input-section">
-    <h2>Select Financing Terms</h2>
+    <h2>BMW Select Terms</h2>
     <div class="grid">
       <div class="field col-3">
         <label for="selectIncentiveName1">Select Incentive 1 Name</label>
@@ -496,7 +511,7 @@
 
       <div id="screenRetailCard" class="result-card">
         <div class="result-head">
-          <h3>Retail</h3>
+          <h3 id="screenRetailTitle">Finance</h3>
           <div class="payment" id="screenRetailPayment">$0.00</div>
         </div>
         <div class="result-body">
@@ -509,7 +524,7 @@
 
       <div id="screenSelectCard" class="result-card">
         <div class="result-head">
-          <h3>Select</h3>
+          <h3>BMW Select</h3>
           <div class="payment" id="screenSelectPayment">$0.00</div>
         </div>
         <div class="result-body">
@@ -578,6 +593,7 @@
       <div id="quoteRetailCard" class="quote-option retail-card">
         <div class="quote-option-title">RETAIL FINANCE</div>
         <div class="quote-option-payment" id="quoteRetailPayment">$0.00</div>
+          <div id="quoteRetailPaymentLabel" class="payment-label">PER MONTH</div>
         <div class="payment-caption">PER MONTH</div>
         <div class="payment-difference" id="retailPaymentDifference"></div>
         <div class="quote-option-body">
@@ -743,6 +759,28 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </section>
+
+  <section id="aboutTab" class="tab-panel">
+    <h2>About BMW Quote Pro</h2>
+    <div class="about-grid">
+      <div class="about-card"><div class="about-label">BMW Quote Pro Version</div><div id="aboutVersion" class="about-value"></div></div>
+      <div class="about-card"><div class="about-label">Build Date</div><div id="aboutBuildDate" class="about-value"></div></div>
+      <div class="about-card"><div class="about-label">Database Status</div><div id="aboutDatabaseStatus" class="about-value">Checking…</div></div>
+      <div class="about-card"><div class="about-label">Signed-In User</div><div id="aboutSignedInUser" class="about-value">Not signed in</div></div>
+      <div class="about-card about-card-wide"><div class="about-label">Connected Supabase Project</div><div id="aboutSupabaseProject" class="about-value about-monospace">Not configured</div></div>
+    </div>
+    <h2>Changelog</h2>
+    <div class="changelog-card">
+      <h3>v2.2.2</h3><ul><li>Added Cash Purchase inside Finance.</li><li>Renamed cards to Lease, Finance, and BMW Select.</li><li>Added About & Backup diagnostics.</li><li>Added quote export and settings backup.</li></ul>
+      <h3>v2.2.1</h3><ul><li>Persistent login and automatic reconnection.</li><li>Collapsed connection settings after sign-in.</li><li>Save/update confirmations.</li><li>One-page printing and private notes excluded.</li></ul>
+    </div>
+    <h2>Backup & Export</h2>
+    <div class="backup-card">
+      <div class="backup-actions"><button type="button" class="btn-primary" onclick="exportDatabaseQuotes()">Export Saved Quotes</button><button type="button" class="btn-secondary" onclick="backupApplicationSettings()">Back Up Settings</button></div>
+      <div class="small-help">Export Saved Quotes downloads your accessible quotes as JSON. Back Up Settings downloads your local connection, presets, and display settings.</div>
+      <div id="backupMessage" class="database-message"></div>
     </div>
   </section>
 

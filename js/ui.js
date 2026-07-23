@@ -98,6 +98,9 @@ function clearForm() {
   );
   if (standardLease) standardLease.checked = true;
 
+  const cashPurchase = document.getElementById("cashPurchase");
+  if (cashPurchase) cashPurchase.checked = false;
+
   [
     "displayLease",
     "displayRetail",

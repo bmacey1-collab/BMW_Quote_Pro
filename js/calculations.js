@@ -177,6 +177,13 @@ function getNum(id) {
     document.querySelector('.quote-comparison').style.gridTemplateColumns = columns;
   }
 
+  function updateCashPurchaseDisplay(isCash) {
+    const monthsField = document.getElementById('financeMonthsField');
+    const aprField = document.getElementById('financeAprField');
+    if (monthsField) monthsField.classList.toggle('hidden', isCash);
+    if (aprField) aprField.classList.toggle('hidden', isCash);
+  }
+
   function calculateAll() {
     const d = getDealValues();
 
@@ -226,9 +233,12 @@ function getNum(id) {
     const financeMonths = getNum('financeMonths');
     const aprRate = getNum('aprRate');
     const retailPayment = standardPayment(retailFinanceAmount, aprRate, financeMonths);
+    const cashPurchase = document.getElementById('cashPurchase').checked;
+    const cashPurchaseTotal = retailFinanceAmount;
 
     document.getElementById('amountFinanced').value = money(retailFinanceAmount);
     document.getElementById('financePayment').value = money(retailPayment);
+    document.getElementById('cashPurchaseTotal').value = money(cashPurchaseTotal);
 
     const selectTaxableVehicle = Math.max(d.selectSellingPrice - totalTradeValue, 0);
     const selectSalesTax = (selectTaxableVehicle + d.commonFees) * d.taxRate;
@@ -248,12 +258,14 @@ function getNum(id) {
       leaseUpfrontTax, leaseCapCost,
       totalTradeValue, totalPayoff,
       financeMonths, aprRate, retailSalesTax, retailFinanceAmount, retailPayment,
+      cashPurchase, cashPurchaseTotal,
       selectMonths, selectApr, balloon, selectSalesTax, selectFinanceAmount, selectPayment
     };
 
     updateScreenResults(results);
     updateQuote(results);
     applyDisplayChoices();
+    updateCashPurchaseDisplay(cashPurchase);
   }
 
   function updateScreenResults(r) {
@@ -263,9 +275,9 @@ function getNum(id) {
     document.getElementById('screenMF').textContent = r.moneyFactor.toFixed(5);
     document.getElementById('screenLeaseDue').textContent = money(r.leaseType === 'onepay' ? r.onePayAmount : r.leaseDue);
 
-    document.getElementById('screenRetailPayment').textContent = money(r.retailPayment);
-    document.getElementById('screenRetailTerm').textContent = r.financeMonths + ' months';
-    document.getElementById('screenRetailApr').textContent = r.aprRate.toFixed(2) + '%';
+    document.getElementById('screenRetailPayment').textContent = money(r.cashPurchase ? r.cashPurchaseTotal : r.retailPayment);
+    document.getElementById('screenRetailTerm').textContent = r.cashPurchase ? 'Cash Purchase' : r.financeMonths + ' months';
+    document.getElementById('screenRetailApr').textContent = r.cashPurchase ? 'N/A' : r.aprRate.toFixed(2) + '%';
     document.getElementById('screenRetailAmount').textContent = money(r.retailFinanceAmount);
     document.getElementById('screenRetailDue').textContent = money(r.d.cashDown);
 
@@ -434,9 +446,21 @@ function getNum(id) {
     document.getElementById('quoteLeaseMF').textContent = r.moneyFactor.toFixed(5);
     document.getElementById('quoteLeaseDue').textContent = money(r.leaseType === 'onepay' ? r.onePayAmount : r.leaseDue);
 
-    document.getElementById('quoteRetailPayment').textContent = money(r.retailPayment);
-    document.getElementById('quoteRetailTerm').textContent = r.financeMonths + ' months';
-    document.getElementById('quoteRetailApr').textContent = r.aprRate.toFixed(2) + '%';
+    const retailTitle = document.getElementById('quoteRetailTitle');
+    const retailPaymentLabel = document.getElementById('quoteRetailPaymentLabel');
+    if (r.cashPurchase) {
+      retailTitle.textContent = 'Cash Purchase';
+      document.getElementById('quoteRetailPayment').textContent = money(r.cashPurchaseTotal);
+      retailPaymentLabel.textContent = 'TOTAL CASH DUE';
+      document.getElementById('quoteRetailTerm').textContent = 'Cash Purchase';
+      document.getElementById('quoteRetailApr').textContent = '';
+    } else {
+      retailTitle.textContent = 'Finance';
+      document.getElementById('quoteRetailPayment').textContent = money(r.retailPayment);
+      retailPaymentLabel.textContent = 'PER MONTH';
+      document.getElementById('quoteRetailTerm').textContent = r.financeMonths + ' months';
+      document.getElementById('quoteRetailApr').textContent = r.aprRate.toFixed(2) + '%';
+    }
     document.getElementById('quoteRetailDueUpFront').textContent = money(r.d.cashDown);
 
     document.getElementById('quoteSelectPayment').textContent = money(r.selectPayment);
@@ -452,7 +476,7 @@ function getNum(id) {
       showLeaseDetails ? 'flex' : 'none';
 
     document.getElementById('quoteRetailAprRow').style.display =
-      document.getElementById('showRetailRate').checked ? 'flex' : 'none';
+      (!r.cashPurchase && document.getElementById('showRetailRate').checked) ? 'flex' : 'none';
 
     const showSelectDetails = document.getElementById('showSelectDetails').checked;
     document.getElementById('quoteSelectAprRow').style.display =

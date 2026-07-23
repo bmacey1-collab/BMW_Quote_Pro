@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   setDefaultQuoteDate();
   refreshPresetList();
+  updateAboutDiagnostics();
   initializeSupabase();
   updateDatabaseSetupVisibility();
   calculateAll();

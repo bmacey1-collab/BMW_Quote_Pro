@@ -103,3 +103,13 @@ Add these Redirect URLs:
 `https://yourbmwguy.com/**`
 
 `https://yourbmwguy-pro.netlify.app/**`
+
+
+## BMW Quote Pro v2.2.2
+Build date: 2026-07-23
+
+- Cash Purchase inside Finance
+- Cards renamed Lease, Finance, and BMW Select
+- About & Backup tab
+- Version/build/changelog/database/user/project diagnostics
+- Export Saved Quotes and Back Up Settings

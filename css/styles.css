@@ -775,3 +775,15 @@
     min-width: 0;
   }
 }
+
+.cash-purchase-control { border:2px solid #2e8b57; background:#eaf7ef; }
+.about-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.about-card,.changelog-card,.backup-card { border:1px solid #d9e1e9; border-radius:12px; padding:16px; background:#fff; }
+.about-card-wide { grid-column:span 2; }
+.about-label { color:#66717d; font-size:12px; font-weight:bold; text-transform:uppercase; letter-spacing:.6px; }
+.about-value { margin-top:7px; color:#0f2f57; font-size:18px; font-weight:bold; overflow-wrap:anywhere; }
+.about-monospace { font-family:Consolas,Monaco,monospace; font-size:14px; }
+.changelog-card h3 { margin:4px 0 6px; color:#0f2f57; }
+.changelog-card ul { margin-top:0; }
+.backup-actions { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
+@media (max-width:700px){.about-grid{grid-template-columns:1fr}.about-card-wide{grid-column:span 1}}
