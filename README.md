@@ -169,3 +169,45 @@ Browser security does not allow mailto or Gmail compose links to automatically a
 - The image is proportionally scaled and centered on one landscape Letter page.
 - The on-screen Results toolbar is removed from the PDF.
 - Print Results behavior is unchanged.
+
+
+## BMW Quote Pro v2.4.0 — Mobile & PWA
+
+Build date: 2026-07-23
+
+### Mobile improvements
+
+- Responsive phone and tablet layouts
+- Large touch-friendly fields and buttons
+- Bottom mobile navigation
+- Swipeable Lease, Finance, and BMW Select result cards
+- Stacked client, dashboard, email, database, and settings views
+- Safe-area support for modern iPhones
+- Desktop layout remains unchanged on larger screens
+
+### Install on a phone
+
+#### iPhone / iPad
+
+1. Open `https://yourbmwguy.com` in Safari.
+2. Tap the Share button.
+3. Select **Add to Home Screen**.
+4. Launch BMW Quote Pro from the new icon.
+
+#### Android
+
+1. Open `https://yourbmwguy.com` in Chrome.
+2. Open the browser menu.
+3. Select **Install app** or **Add to Home screen**.
+
+### PDF workflow
+
+The custom Create PDF function was removed because browser Print Results is more reliable.
+
+Use:
+
+1. **Print Results**
+2. Choose **Save as PDF**
+3. Landscape
+4. Letter
+5. Headers and footers off

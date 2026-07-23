@@ -3,16 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Quote Pro v2.3.3</title>
+  <title>BMW Quote Pro v2.4.0</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/cards.css" />
   <link rel="stylesheet" href="css/print.css" />
+
+  <meta name="theme-color" content="#1c69d4" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="BMW Quote Pro" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.svg" />
+
 </head>
 <body>
 <main class="page">
   <div class="app-header">
     <div>
-      <h1>BMW Quote Pro v2.3.3</h1>
+      <h1>BMW Quote Pro v2.4.0</h1>
       <div class="app-subtitle">Build the deal once, then compare Lease, Retail, and Select.</div>
     </div>
   </div>
@@ -648,7 +656,6 @@
       </div>
 
       <div class="email-actions">
-        <button type="button" class="btn-secondary" onclick="createQuotePdf()">Create Quote PDF</button>
         <button type="button" class="btn-secondary" onclick="copyEmailText()">Copy Email</button>
         <button type="button" class="btn-primary" onclick="openEmailApplication()">Open Email App</button>
         <button type="button" class="btn-secondary" onclick="openGmailComposer()">Open Gmail</button>
@@ -667,10 +674,10 @@
   <div id="breakdownResults" class="breakdown-results">
     <div class="results-toolbar">
       <h2>Quote Results</h2>
+      <div class="mobile-swipe-hint">Swipe the cards to compare payment options.</div>
       <div class="results-actions">
         <button type="button" class="btn-secondary" onclick="showTab('setupTab')">Back to Setup</button>
         <button type="button" class="btn-secondary" onclick="saveQuoteToDatabase()">Save Quote</button>
-        <button type="button" class="btn-secondary" onclick="createQuotePdf()">Create PDF</button>
         <button type="button" class="btn-primary" onclick="printQuote()">Print Results</button>
       </div>
     </div>
@@ -900,6 +907,14 @@
     </div>
     <h2>Changelog</h2>
     <div class="changelog-card">
+      <h3>v2.4.0</h3>
+      <ul>
+        <li>Added responsive mobile layouts and touch-friendly controls.</li>
+        <li>Added installable Progressive Web App support.</li>
+        <li>Added swipeable result cards on phones.</li>
+        <li>Added a mobile bottom navigation bar.</li>
+        <li>Removed the unreliable custom PDF button; use Print Results → Save as PDF.</li>
+      </ul>
       <h3>v2.3.3</h3><ul><li>Fixed Create PDF so the quote always fits on one landscape Letter page.</li></ul>
       <h3>v2.3.2</h3><ul><li>Restored landscape full-page quote printing.</li><li>Added Create PDF download.</li><li>Corrected lease upfront tax to exclude trade equity.</li></ul>
       <h3>v2.3.1</h3><ul><li>Fixed Save Quote and Email buttons.</li><li>Added Open Gmail browser option.</li><li>Added clearer runtime error notifications.</li></ul>
@@ -921,6 +936,30 @@
     <button type="button" class="btn-primary" onclick="showTab('resultsTab')">View Results</button>
   </div>
   <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
+
+  <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <button type="button" onclick="showTab('dashboardTab')">
+      <span aria-hidden="true">⌂</span>
+      <small>Home</small>
+    </button>
+    <button type="button" onclick="showTab('setupTab')">
+      <span aria-hidden="true">＋</span>
+      <small>Quote</small>
+    </button>
+    <button type="button" onclick="showTab('resultsTab')">
+      <span aria-hidden="true">▤</span>
+      <small>Results</small>
+    </button>
+    <button type="button" onclick="showTab('clientsTab')">
+      <span aria-hidden="true">👤</span>
+      <small>Clients</small>
+    </button>
+    <button type="button" onclick="showTab('savedTab')">
+      <span aria-hidden="true">★</span>
+      <small>Saved</small>
+    </button>
+  </nav>
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -934,5 +973,14 @@
 <script src="js/email.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker.register("./service-worker.js").catch(function(error) {
+        console.warn("Service worker registration failed:", error);
+      });
+    });
+  }
+</script>
 </body>
 </html>
